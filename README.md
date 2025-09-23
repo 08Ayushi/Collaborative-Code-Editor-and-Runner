@@ -43,25 +43,29 @@ Built with React.js and Monaco Editor for an intuitive, VS Code-like experience.
 
 2. Install dependencies:
    - **For backend**
+     
    ```
    cd backend
    npm install
    ```
 
-   **For frontend**
+   - **For frontend**
+     
    ```
    cd frontend
    npm start
    ```
 
 4. Start the development servers:
-   **Backend**
+   - **Backend**
+     
    ```
    cd backend
    npm run dev
    ```
 
-   **Frontend**
+   - **Frontend**
+     
    ```
    cd frontend
    npm start or npm run dev
@@ -71,12 +75,14 @@ Built with React.js and Monaco Editor for an intuitive, VS Code-like experience.
 
 1. Install concurrently:
    - From the root of your project (where both frontend/ and backend/ exist):
+     
      ```
      npm install --save-dev concurrently
      ```
 
 2. Update root package.json:
    - Inside your root package.json, add scripts like this:
+     
 ```
 {
   "scripts": {
@@ -89,6 +95,7 @@ Built with React.js and Monaco Editor for an intuitive, VS Code-like experience.
 
 3. Run both servers together:
    - Now, from the root of your project:
+     
      ```
      npm run dev
      ```
