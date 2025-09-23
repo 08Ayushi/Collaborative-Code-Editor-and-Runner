@@ -27,12 +27,13 @@ Built with React.js and Monaco Editor for an intuitive, VS Code-like experience.
 - Other Tools: Nodemon, CRDT (via Yjs)
 
 **Project Structure**
+```
 .
 ├── frontend/        # React frontend with Monaco Editor
 ├── backend/        # Node.js + Express + WebSocket server
 ├── package.json
 └── README.md
-
+```
 **Installation & Setup**
 1. Clone the repository:
    git clone https://github.com/your-username/collaborative-code-editor.git
