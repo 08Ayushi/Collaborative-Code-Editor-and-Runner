@@ -42,7 +42,7 @@ Built with React.js and Monaco Editor for an intuitive, VS Code-like experience.
    ```
 
 2. Install dependencies:
-   ####**For backend**
+   - **For backend**
    ```
    cd backend
    npm install
