@@ -1,0 +1,690 @@
+/* ========== Base / Theme ========== */
+:root{
+  --bg:#1f2430;
+  --panel:#0f1420;
+  --panel-2:#2b2f3a;
+  --text:#fff;
+  --shadow:0 4px 24px rgba(0,0,0,.25);
+  --radius:10px;
+  --gap:16px;
+}
+
+/* layout */
+.editor-wrapper {
+  display: flex;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 0; /* allow children to shrink */
+}
+
+/* sidebar */
+.sidebar {
+  width: 180px;
+  background: #151820;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.logo { font-weight: 600; font-size: 18px; line-height: 1.2; }
+.logo .sub { font-size: 11px; opacity: .6; margin: 2px 0 0; }
+h4 { margin: 8px 0 4px; font-size: 13px; font-weight: 500; opacity: .8; }
+
+.user-list {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-chip {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ff5c8a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #fff;
+  font-size: 16px;
+  cursor: default;
+}
+
+.user-name { font-size: 13px; }
+
+/* buttons (generic) */
+.btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: opacity .15s;
+}
+.btn.copy { background: #fff; color: #000; margin-top: auto; }
+.btn.leave { background: #4ade80; color: #000; }
+.btn:hover { opacity: .8; }
+
+/* code editor base */
+.code-editor {
+  width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: none;
+  font-family: "Source Code Pro", monospace;
+  font-size: clamp(13px, 1.4vw, 16px);
+  line-height: 1.5;
+  outline: none;
+  resize: none;
+}
+
+/* ===== MAIN: editor + terminal ===== */
+.editor-area{
+  flex:1;
+  display:flex;
+  gap: var(--gap);
+  padding: var(--gap);
+  box-sizing:border-box;
+  overflow:hidden;
+  min-height:0;
+  /* (removed old margin-top) */
+}
+
+/* LEFT: editor section as card */
+.editor-section{
+  flex:2;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  overflow:hidden;
+
+}
+
+/* make the code area grow under the header */
+.editor-section .monaco-editor,
+.editor-section .editor-textarea{
+  flex:1;
+  overflow:auto;
+  min-height:0;
+}
+
+
+/* RIGHT: terminal column */
+.editor-area > :not(.editor-section){
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  overflow:auto;
+  min-height:0;
+}
+
+/* optional: Output header style */
+.output-header {
+  font-weight: bold;
+  padding: 8px;
+  background: #2d2d2d;
+  color: #fff;
+}
+
+/* LiveTerminal fill */
+.editor-wrapper .live-terminal,
+.editor-wrapper .live-terminal > * {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+ 
+}
+.editor-wrapper .live-terminal .output,
+.editor-wrapper .live-terminal .terminal-output {
+  flex: 1;
+  overflow: auto;
+
+}
+
+/* focus border around editors */
+.editor-border {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+/* ----- Header above editor ----- */
+.editor-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between; 
+  gap:12px;
+  padding:8px 12px;
+  background: var(--panel-2);
+  border-radius:10px 10px 0 0;
+  position:sticky;
+  top:0;
+  z-index:2;
+  height: 8%;
+}
+
+.editor-header .language-selector,
+.editor-header select{
+  max-width:240px;
+}
+
+.editor-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+
+.run-button,
+.save-btn,
+.download-btn,
+.login-btn{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  
+  cursor:pointer;
+  white-space:nowrap;
+  transition:transform .05s ease, opacity .2s ease;
+}
+.run-button{ background:#22c55e; color:#0b1320; }
+.download-btn{ background:#10b981; color:#0b1320; }
+.login-btn{ background:#0ea5e9; color:#0b1320; }
+
+.run-button:active,
+.save-btn:active,
+.download-btn:active,
+.login-btn:active{ transform:translateY(1px); }
+
+/* signed-in pill */
+.signed-in-pill{
+  background:#0b1220;
+  padding:6px 8px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+/* ========== Responsiveness ========== */
+
+/* Laptops: tighten spacing a bit */
+@media (max-width: 1280px){
+  :root{ --gap:14px; }
+  .sidebar{ width: 160px; }
+  .editor-header{ gap:10px; }
+}
+
+/* Tablets landscape / small laptops */
+@media (max-width: 1024px){
+  .sidebar{ width: 140px; }
+  .user-name{ display:none; } /* save space */
+  .editor-header .language-selector,
+  .editor-header select{ max-width:200px; }
+  .editor-actions{ gap:8px; }
+  
+}
+
+/* Tablets portrait & big phones */
+@media (max-width: 900px){
+  /* Stack layout vertically: sidebar becomes a top bar */
+  .editor-wrapper{
+    flex-direction: column;
+  }
+  .sidebar{
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    overflow-x: auto;       /* allow horizontal scroll if crowded */
+  }
+  .editor-area{
+    flex-direction: column; /* editor on top, terminal below */
+  }
+
+  /* Allocate heights so both are usable */
+  .editor-section{
+    flex: 1 1 auto;
+    min-height: 46vh;       /* editor gets more space */
+  }
+  .editor-header{
+   height: 12%;
+  }
+  .editor-area > :not(.editor-section){
+    flex: 0 0 36vh;         /* terminal ~ one-third screen */
+    min-height: 32vh;
+  }
+
+  /* Header wraps nicely */
+  .editor-header{ flex-wrap: wrap; }
+  .editor-actions{ width: 100%; justify-content: flex-end; }
+  .editor-header .language-selector,
+  .editor-header select{
+    max-width: 100%;
+    flex: 1 1 240px;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px){
+  :root{ --gap:12px; --radius:8px; }
+  .sidebar{ padding: 10px; gap: 8px; }
+  .logo{ font-size: 16px; }
+  .editor-area{ padding: var(--gap); gap: var(--gap); }
+
+  .run-button,
+  .save-btn,
+  .download-btn,
+  .login-btn,
+  .btn{
+    padding: 7px 10px;
+    font-size: 11px;
+    border-radius: 7px;
+  }
+
+  .editor-section{ min-height: 44vh; }
+  .editor-area > :not(.editor-section){ min-height: 34vh; }
+}
+
+/* Small phones */
+@media (max-width: 420px){
+  .logo{ font-size: 15px; }
+  .user-chip{ width: 34px; height: 34px; font-size: 14px; }
+  .editor-header{ padding: 6px 10px; gap: 8px; }
+  .editor-actions{ gap: 6px; }
+  .run-button,
+  .save-btn,
+  .download-btn,
+  .login-btn,
+  .btn{
+    padding: 6px 9px;
+    font-size: 10px;
+    border-radius: 6px;
+  }
+}
+
+/* Prevent layout thrash when scrollbars appear/disappear */
+.terminal-body,
+.live-terminal .output,
+.live-terminal .terminal-output,
+.editor-section .monaco-editor,
+.editor-section .editor-textarea {
+  scrollbar-gutter: stable both-edges; /* keeps width constant */
+  overscroll-behavior: contain;       /* stops bounce/chain reactions */
+  contain: paint;                      /* isolate painting; avoids RO loops */
+  min-width: 0;                        /* flex overflow guard */
+}
+
+/* Prefer consistent vertical scrollbar instead of auto-toggling */
+.terminal-body,
+.live-terminal .output,
+.live-terminal .terminal-output {
+  overflow-y: auto;           /* leave as auto if you like */
+  /* If the error persists, switch the next line on: */
+  /* overflow-y: scroll; */   /* uncomment to *always* show the gutter */
+}
+
+/* Ensure flex children are allowed to shrink without causing scrollbars */
+.editor-area > * { min-width: 0; }
+.editor-section { min-width: 0; }
+
+/* --- Mobile header/layout fixes (drop at END of EditorPage.css) --- */
+
+/* Let header children shrink properly and avoid overflow */
+.editor-header > * { min-width: 0; }
+
+/* Default: keep nice spacing and allow wrapping */
+.editor-header {
+  align-items: stretch;       /* buttons and selector same height */
+  flex-wrap: wrap;
+}
+
+/* Make the actions area behave like a grid on narrow screens */
+@media (max-width: 900px) {
+  /* Stack header rows: selector first, actions second */
+  .editor-header {
+    display: grid;
+    grid-template-columns: 1fr;   /* one column – rows stack */
+    row-gap: 8px;
+  }
+
+  /* Language selector takes full width */
+  .editor-header .language-selector,
+  .editor-header select {
+    max-width: none;
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  /* Buttons become a responsive grid (3 across on tablets) */
+  .editor-actions {
+    order: 2;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  /* Make each button fill its grid cell */
+  .editor-actions .run-button,
+  .editor-actions .save-btn,
+  .editor-actions .download-btn,
+  .editor-actions .login-btn,
+  .btn {
+    width: 100%;
+    justify-self: stretch;
+  }
+}
+
+/* Very small phones: 2 columns; make "Run Code" span full width */
+@media (max-width: 420px) {
+  .editor-actions {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .editor-actions .run-button {
+    grid-column: 1 / -1;     /* span both columns */
+  }
+}
+
+/* Tiny devices: keep touch targets comfortable */
+@media (max-width: 360px) {
+  .run-button,
+  .download-btn,
+  .login-btn,
+  .btn {
+    padding: 8px 10px;       /* slightly larger hit area */
+    font-size: 12px;
+    border-radius: 8px;
+  }
+}
+
+/* ===== Mobile drawer + header (append at end) ===== */
+
+/* Hidden by default; shown on small screens */
+.mobile-header { display: none; }
+
+@media (max-width: 900px){
+  /* Replace the old "sidebar becomes top bar" approach with a true drawer */
+  .sidebar { display: none !important; }
+
+  .mobile-header{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* centers the title */
+    gap: 12px;
+    padding: 12px;
+    background: #151820;
+    color: #fff;
+    box-shadow: var(--shadow);
+  }
+  .mobile-header .hamburger{
+    position: absolute;
+    left: 12px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.15);
+    color: #fff;
+    font-size: 18px;
+    line-height: 1;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  .mobile-header .mobile-title{
+    text-align: center;
+    display: grid;
+    gap: 2px;
+  }
+  .mobile-header .mobile-title .title{
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: .2px;
+  }
+  .mobile-header .mobile-title .subtitle{
+    font-size: 11px;
+    opacity: .7;
+  }
+  /* right spacer to keep title perfectly centered */
+  .mobile-right-spacer{ width: 32px; }
+}
+
+/* Drawer overlay */
+.drawer-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 30;
+  display: flex;
+}
+
+.drawer{
+  width: min(82vw, 340px);
+  max-width: 50vw;
+  height: 100%;
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  padding: 16px;
+  overflow-y: auto;
+  transform: translateX(0);
+  animation: drawer-slide-in .15s ease-out;
+}
+
+
+@keyframes drawer-slide-in{
+  from{ transform: translateX(-100%); }
+  to{ transform: translateX(0); }
+}
+
+.drawer-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.drawer-title{ font-weight: 700; font-size: 16px; }
+.drawer-close{
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: var(--text);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.drawer-section{
+  display: grid;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.signed-in-pill.small{
+  background: #0b1220;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.btn.logout{
+  background: #ef4444;  /* red */
+  color: #fff;
+}
+
+/* Bigger buttons + user icons in mobile drawer */
+@media (max-width: 900px){
+  .drawer .btn,
+  .drawer .login-btn{
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+  .drawer .user-chip,
+  .user-chip{
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+}
+
+/* Extra-small phones */
+@media (max-width: 420px){
+  .drawer .btn,
+  .drawer .login-btn{
+    padding: 14px 18px;
+    font-size: 15px;
+  }
+  .drawer .user-chip,
+  .user-chip{
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+  }
+}
+
+/* --- icon button base --- */
+.icon-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.icon-btn svg{
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* <=600px: keep header as ONE ROW, show icons only */
+@media (max-width: 600px){
+  /* override earlier grid rule */
+  .editor-header{
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  /* language selector stretches on the left */
+  .editor-header .language-selector,
+  .editor-header select{
+    flex: 1 1 auto;
+    max-width: none;
+  }
+  /* buttons on the right, icon-only */
+  .editor-actions{
+    display: flex !important;
+    width: auto !important;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+  .icon-btn{
+    padding: 8px;             /* square-ish icon buttons */
+    aspect-ratio: 1;
+    min-width: 40px;
+    justify-content: center;
+  }
+  .icon-btn .label{           /* hide text on phones */
+    display: none;
+  }
+  .icon-btn svg{
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* <=420px: slightly smaller icons so everything fits */
+@media (max-width: 420px){
+  .icon-btn{
+    padding: 7px;
+    min-width: 36px;
+  }
+  .icon-btn svg{
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* =================== Responsive header + icon buttons =================== */
+
+/* Scale icon buttons with viewport */
+.icon-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+.icon-btn svg{ 
+  fill: currentColor;
+}
+
+/* ≤900px (tablets & small laptops): keep header on ONE row */
+@media (max-width: 900px){
+  .editor-header{
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+  /* selector grows; prevents wrapping/overflow */
+  .editor-header .language-selector,
+  .editor-header select{
+    flex: 1 1 auto;
+    max-width: none;
+    min-width: 0;
+  }
+  /* actions stay on the right */
+  .editor-actions{
+    display: flex !important;
+    width: auto !important;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+}
+
+/* ≤700px (phones): hide labels, keep just icons */
+@media (max-width: 700px){
+  .icon-btn .label{ display: none; }
+  .icon-btn{
+    padding: 8px;
+    aspect-ratio: 1 / 1;
+    min-width: 40px;
+    justify-content: center;
+  }
+  .icon-btn svg{
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ≤420px (small phones): tiny size bump down */
+@media (max-width: 420px){
+  .icon-btn{ min-width: 36px; padding: 7px; }
+  .icon-btn svg{ width: 16px; height: 16px; }
+}
+
+/* Landscape phones with short height: give editor more space */
+@media (max-height: 560px) and (orientation: landscape){
+  .editor-section{ min-height: 60vh; }
+  .editor-area > :not(.editor-section){ min-height: 30vh; }
+}
+
+/* Make editor + terminal columns equal height on wider screens */
+@media (min-width: 901px){
+  .editor-area{
+    align-items: stretch;   /* force children to stretch equally */
+  }
+  .editor-section,
+  .editor-area > :not(.editor-section){
+    height: 80%;          /* prevent overflow issues */
+  }
+  .editor-header{
+    height: 100%;
+  }
+}
