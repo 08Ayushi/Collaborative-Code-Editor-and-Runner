@@ -1,0 +1,514 @@
+/* ===== Scroll Lock: prevent whole page scrolling ===== */
+html, body {
+  height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  background-color: #1e1e1e;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Page Wrapper ===== */
+.code-editor-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background-color: #1e1e1e;
+  color: #fff;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 47px;
+  box-sizing: border-box;
+  background: #1e1e1e;
+  gap: 16px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.room-pill {
+  background: #2e3d4a;
+  color: #b9d6ff;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  letter-spacing: 0.5px;
+  border: 1px solid #3f5363;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* right spacer used on mobile to keep title perfectly centered */
+.mobile-right-spacer { width: 32px; flex: 0 0 32px; }
+
+/* hamburger (hidden on desktop) */
+.hamburger, .hamburger-btn {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* primary buttons */
+.create-room-btn,
+.download-btn,
+.login-btn,
+.logout-btn {
+  background: #0d62b3;
+  border: none;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  line-height: 1;
+  transition: background-color .18s, box-shadow .18s, opacity .18s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+}
+.create-room-btn:hover, .login-btn:hover, .download-btn:hover, .logout-btn:hover { opacity: .9; }
+.download-btn { background: #00897b; }
+.download-btn:hover { background: #00796b; }
+.logout-btn { background: #ef4444; } /* red */
+
+/* ===== Main Layout (Editor + Output) ===== */
+.code-editor-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 20px;
+  padding: 0 40px 40px 40px;
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+/* ===== Editor & Output Sections ===== */
+.editor-section,
+.output-section {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
+  
+}
+
+/* ===== Shared Header (Editor + Output) ===== */
+.editor-header,
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3c3f41;
+  border-bottom: 1px solid #323232;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #a7a7a7;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Editor header spacing & growth ---------- */
+.editor-header {
+  display: flex;
+  justify-content: space-between;    /* left grows, right stays tight */
+  align-items: stretch;    
+  background-color: #3c3f41;
+  border-bottom: 1px solid #323232;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #a7a7a7;
+  min-height: 48px;
+  gap: 12px;
+  flex-wrap: wrap;               /* keep on one line on wider screens */
+}
+
+/* Make the language selector flex-grow while keeping actions tight */
+.editor-header .language-selector,
+.editor-header select {
+  flex: 1 1 auto;
+  min-width: 0;                      /* prevents overflow pushing actions */
+  max-width: none;
+}
+
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  margin-left: auto;                 /* pushes actions to the far right */
+}
+
+
+/* ===== Language Selector & Indicator ===== */
+.language-selector {
+  background-color: #2b2b2b;
+  color: #fff;
+  border: 1px solid #505050;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  outline: none;
+}
+.language-selector:focus { border-color: #007acc; }
+.language-indicator { color: #a7a7a7; font-size: 12px; text-transform: uppercase; }
+
+/* ===== Run Button ===== */
+.run-button {
+  background-color: #22c55e;
+  color: #0b1320;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform .05s ease, opacity .2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.run-button:active { transform: translateY(1px); }
+
+/* Icon button utility (for mobile) */
+.icon-btn { display: inline-flex; align-items: center; gap: 8px; }
+.icon-btn .label { display: inline; }
+
+/* ===== Monaco Editor Container ===== */
+.code-editor-container,
+.editor-section .code-editor-container {
+  flex: 1 1 auto;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  background-color: #2b2b2b;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.editor-section .monaco-editor,
+.editor-section .monaco-editor .overflow-guard { flex: 1 1 auto; min-height: 0; }
+
+/* Gutter/margin */
+.code-editor-container .monaco-editor .margin,
+.editor-section .monaco-editor .margin { background-color: #313335; border-right: 1px solid #3c3f41; }
+
+/* Editor backgrounds */
+.code-editor-container .monaco-editor .monaco-editor-background,
+.editor-section .monaco-editor .monaco-editor-background { background-color: #2b2b2b; }
+
+/* Selection highlight */
+.code-editor-container .monaco-editor .selected-text,
+.editor-section .monaco-editor .selected-text { background-color: #214283; }
+
+/* Line numbers */
+.code-editor-container .monaco-editor .line-numbers,
+.editor-section .monaco-editor .line-numbers { color: #606366; }
+
+/* Current line highlight */
+.code-editor-container .monaco-editor .current-line,
+.editor-section .monaco-editor .current-line { border: none; background-color: #323232; }
+
+/* Scrollbars inside Monaco */
+.code-editor-container .monaco-editor .monaco-scrollable-element,
+.editor-section .monaco-editor .monaco-scrollable-element {
+  scrollbar-width: thin;
+  scrollbar-color: #4e4e4e #2b2b2b;
+}
+.code-editor-container .monaco-editor ::-webkit-scrollbar,
+.editor-section .monaco-editor ::-webkit-scrollbar { width: 10px; height: 10px; }
+.code-editor-container .monaco-editor ::-webkit-scrollbar-track,
+.editor-section .monaco-editor ::-webkit-scrollbar-track { background: #2b2b2b; }
+.code-editor-container .monaco-editor ::-webkit-scrollbar-thumb,
+.editor-section .monaco-editor ::-webkit-scrollbar-thumb { background: #4e4e4e; border-radius: 5px; }
+.code-editor-container .monaco-editor ::-webkit-scrollbar-thumb:hover,
+.editor-section .monaco-editor ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* Stabilize scrollbars */
+.code-editor-container,
+.output-content { scrollbar-gutter: stable both-edges; overscroll-behavior: contain; contain: paint; }
+
+/* ===== Output Section ===== */
+.output-content {
+  flex: 1 1 auto;
+  padding: 16px;
+  overflow: auto;
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a7a7a7;
+  background-color: #2b2b2b;
+  min-height: 0;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+}
+
+.output-text { margin: 0; color: #a7a7a7; white-space: pre-wrap; font-size: 13px; }
+.error-message { color: #ff6b6b; white-space: pre-wrap; font-size: 13px; margin: 0; }
+
+/* ===== Auth modal ===== */
+.auth-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.auth-modal {
+  width: 360px; background: #2b2b2b; border: 1px solid #3c3f41; border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45); overflow: hidden; color: #e0e0e0;
+}
+.auth-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: #3c3f41; color: #a7a7a7; font-weight: 600;
+}
+.auth-close { background: transparent; color: #aaa; border: none; font-size: 18px; cursor: pointer; }
+.auth-form { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+.auth-form input {
+  background: #1f1f1f; color: #fff; border: 1px solid #505050; border-radius: 6px; padding: 10px 12px;
+}
+.auth-primary {
+  background: #0d62b3; color: #fff; border: none; border-radius: 6px; padding: 10px 14px; cursor: pointer;
+}
+.auth-primary:hover { background: #0b569d; }
+.auth-error { color: #ff6b6b; font-size: 12px; }
+.auth-switch { padding: 0 16px 16px; font-size: 13px; color: #bdbdbd; }
+.auth-switch button { background: transparent; border: none; color: #b9d6ff; cursor: pointer; }
+
+/* ===================== Drawer (mobile) ===================== */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: none;           /* hidden by default; shown when rendered or via .open */
+  z-index: 1200;
+}
+.drawer-backdrop.open { display: block; }
+
+.drawer {
+  width: min(82vw, 340px);
+  max-width: 90vw;
+  height: 100%;
+  background: #23262e;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  padding: 16px;
+  overflow-y: auto;
+  transform: translateX(-100%);
+  animation: drawer-in .2s ease-out forwards;
+}
+@keyframes drawer-in { to { transform: translateX(0); } }
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.drawer-title { font-weight: 700; font-size: 16px; }
+.drawer-close {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff; padding: 6px 10px; border-radius: 8px;
+}
+
+.drawer-section { display: grid; gap: 10px; margin: 12px 0; }
+.drawer .btn {
+  background: #0d62b3;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+.drawer .btn.secondary { background: #ef4444; } /* leave/logout */
+
+/* ---------- Signed-in pill (desktop + drawer) ---------- */
+.signed-in-pill {
+  background: #0b1220;
+  color: #b9d6ff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #2a3b52;
+  font-size: 12px;
+  white-space: nowrap;
+  margin-left: 12px; /* sits nicely after the title */
+}
+.signed-in-pill.small {
+  background: #0b1220;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+/* --- Drawer buttons: same size & centered text --- */
+.drawer .create-room-btn,
+.drawer .join-room-btn,
+.drawer .download-btn,
+.drawer .login-btn,
+.drawer .logout-btn,
+.drawer .btn {
+  width: 100%;
+  min-height: 44px;          /* uniform height */
+  padding: 12px 16px;        /* consistent padding */
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;   /* center the label horizontally */
+  text-align: center;        /* just in case */
+  gap: 8px; 
+  font-size: 16px;   
+  font-weight: bold;              /* icon + label spacing if any */
+}
+/* ===================== Responsive ===================== */
+
+/* Laptops */
+@media (max-width: 1280px){
+  .topbar { padding: 22px 32px; gap: 14px; }
+  .code-editor-layout { gap: 16px; padding: 0 32px 32px; }
+}
+
+/* Small laptops / tablets landscape */
+@media (max-width: 1024px){
+  .app-title { font-size: 22px; }
+  .code-editor-layout { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+}
+
+/* Tablets portrait & big phones */
+@media (max-width: 900px){
+  /* convert to vertical stack */
+  .code-editor-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 20px 20px;
+  }
+  .editor-section { min-height: 48vh; }
+  .output-section { min-height: 48vh; }
+
+  /* topbar: center title, show hamburger & balance with right spacer */
+  .hamburger, .hamburger-btn { display: inline-flex; }
+  .topbar {
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .topbar-left {
+    flex: 1 1 auto;
+    justify-content: center;         /* center the title within the left zone */
+    position: relative;
+  }
+  .app-title { font-size: 20px; text-align: center; }
+  .room-pill { display: none; }      /* moved to drawer if needed */
+  .topbar-actions { display: none; } /* actions are in the drawer on mobile */
+
+  /* place hamburger at the far left of the bar without shifting title */
+  .hamburger {
+    position: absolute;
+    left: 0;
+  }
+}
+
+
+/* Phones */
+@media (max-width: 600px){
+  .editor-header{
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: nowrap;
+  }
+  /* language selector stretches on the left */
+  .editor-header .language-selector,
+  .editor-header select{
+    flex: 1 1 auto;
+    max-width: none;
+  }
+  /* buttons on the right, icon-only */
+  .editor-actions{
+    display: flex !important;
+    width: auto !important;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+  /* icon-only buttons for run */
+  .icon-btn .label { display: none; }
+  .icon-btn { padding: 8px; aspect-ratio: 1; min-width: 40px; justify-content: center; }
+  .icon-btn svg { width: 18px; height: 18px; }
+}
+
+/* Small phones */
+@media (max-width: 420px){
+  .app-title { font-size: 16px;}
+  .editor-header, .output-header { min-height: 38px; padding: 6px 10px; }
+  .icon-btn { min-width: 36px; padding: 7px; }
+  .icon-btn svg { width: 16px; height: 16px; }
+}
+
+
+/* Landscape phones with short height */
+@media (max-height: 560px) and (orientation: landscape){
+  .editor-section { min-height: 60vh; }
+  .output-section { min-height: 30vh; }
+}
+/* Narrow tablets (601–700px): keep language selector and run button on one line */
+@media (min-width: 601px){
+  .editor-header{
+    flex-wrap: nowrap;      /* prevent wrapping */
+    gap: 8px;
+  }
+  .editor-header .language-selector,
+  .editor-header select{
+    flex: 1 1 auto;         /* selector grows */
+    max-width: none;
+    min-width: 0;           /* allow shrinking without wrap */
+  }
+  .run-button{
+    flex: 0 0 auto;         /* keep button size stable */
+  }
+  /* make run button icon-only in this band to save space */
+  .run-button.icon-btn .label{ display: none; }
+  .run-button.icon-btn{
+    padding: 8px;
+    aspect-ratio: 1;
+    min-width: 40px;
+    justify-content: center;
+  }
+}
+

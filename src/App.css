@@ -1,0 +1,193 @@
+/* .App {
+  text-align: center;
+} */
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* -------- InvitePage styles -------- */
+.invite-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* if you also want it vertically centered: */
+  /* align-items: center;  
+     min-height: 100vh; */
+}
+
+.invite-box {
+  background: #2d2d2d; 
+  padding: 2rem;
+  border-radius: 8px; 
+  width: 320px; 
+  margin: 5% auto;
+  text-align: center;
+  color: #fff;
+  box-sizing: border-box;
+  margin-top: 7%;
+}
+
+.invite-box h1 {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+}
+
+/* .tagline {
+  color: #aaa;
+  margin-bottom: 1rem;
+  font-weight: bolder;
+  font-size: larger;
+} */
+
+/* make inputs and the button share the same sizing rules */
+.invite-box input,
+.invite-box .join {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* inputs */
+.invite-box input {
+  padding: 0.7rem; 
+  margin-bottom: 0.8rem;
+  background: #1e1e1e; 
+  border: 1px solid #444; 
+  border-radius: 4px; 
+  color: #fff;
+}
+
+/* Join button */
+.invite-box .join {
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  background: #0d62b3;
+  color: #eeeeee;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bolder;
+  text-align: center;    /* center the “Join” text */
+}
+
+.invite-box .join:hover{
+  background-color: #0b569d;
+  
+}
+
+/* ---- Back button ---- */
+.back{
+  display:block;
+  margin: 1rem auto 0;      /* center it */
+  padding: 0.55rem 1.6rem;
+  width: 110px;             /* fixed width so it looks neat */
+  background: transparent;  /* ghost style */
+  color:#ddd;
+  border:1px solid #555;
+}
+.back:hover{
+  background:#333;
+  border-color:#777;
+  color:#fff;
+}
+.back:focus{
+  outline:2px solid #0a6cff;
+  outline-offset:2px;
+}
+.back:active{
+  transform: scale(.97);
+}
+
+
+/* footer link */
+.small {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover{
+  text-decoration: underline;
+}
+
+/* generic button base (if you don't already have one) */
+.btn{
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background .18s, box-shadow .18s, transform .1s;
+}
+
+/* existing join button example */
+.join{
+  width:100%;
+  padding: 0.9rem 0;
+  background:#0a6cff;
+  color:#fff;
+}
+/* .join:hover{ background:#1a78ff; }
+.btn:disabled{ opacity:.5; cursor:not-allowed; } */
+
+/* ---- Back button ---- */
+.back{
+  display:block;
+  margin: 1rem auto 0;      /* center it */
+  padding: 0.55rem 1.6rem;
+  width: 110px;             /* fixed width so it looks neat */
+  background: transparent;  /* ghost style */
+  color:#ddd;
+  border:1px solid #555;
+}
+.back:hover{
+  background:#333;
+  border-color:#777;
+  color:#fff;
+}
+.back:focus{
+  outline:2px solid #0a6cff;
+  outline-offset:2px;
+}
+.back:active{
+  transform: scale(.97);
+}
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
