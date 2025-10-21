@@ -211,6 +211,7 @@ export default function CodeEditor({
       <div className="code-editor-layout">
         <div className="editor-section">
           <div className="editor-header">
+            {/* Language selector stays compact on desktop */}
             <LanguageSelector selectedLanguage={language} onChange={handleLanguageChange} />
             <div className="editor-actions">
               <button className="run-button" onClick={handleRun}>

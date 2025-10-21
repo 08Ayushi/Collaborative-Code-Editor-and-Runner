@@ -122,10 +122,10 @@ html, body {
   border-radius: 8px;
   overflow: hidden;
   min-height: 0;
-  
 }
 
 /* ===== Shared Header (Editor + Output) ===== */
+/* (Consolidated and fixed: no more 'stretch' and no wrapping on desktop) */
 .editor-header,
 .output-header {
   display: flex;
@@ -138,57 +138,36 @@ html, body {
   font-size: 12px;
   text-transform: uppercase;
   color: #a7a7a7;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* ---------- Editor header spacing & growth ---------- */
-.editor-header {
-  display: flex;
-  justify-content: space-between;    /* left grows, right stays tight */
-  align-items: stretch;    
-  background-color: #3c3f41;
-  border-bottom: 1px solid #323232;
-  padding: 8px 16px;
-  box-sizing: border-box;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #a7a7a7;
-  min-height: 48px;
   gap: 12px;
-  flex-wrap: wrap;               /* keep on one line on wider screens */
+  min-height: 48px;
+  flex-wrap: nowrap;   /* keep on one line to prevent tall header */
 }
 
-/* Make the language selector flex-grow while keeping actions tight */
+/* Make the language selector compact and clamp its size */
 .editor-header .language-selector,
 .editor-header select {
-  flex: 1 1 auto;
-  min-width: 0;                      /* prevents overflow pushing actions */
-  max-width: none;
+  background-color: #2b2b2b;
+  color: #fff;
+  border: 1px solid #505050;
+  border-radius: 6px;
+  height: 36px;                 /* fixed control height */
+  padding: 6px 12px;
+  box-sizing: border-box;
+  flex: 0 0 auto;               /* don't expand across the row */
+  min-width: 140px;
+  max-width: 240px;
+  outline: none;
 }
+.editor-header select:focus { border-color: #007acc; }
 
-
+/* actions stay tight on the right */
 .editor-actions {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 0 0 auto;
-  margin-left: auto;                 /* pushes actions to the far right */
+  margin-left: auto;
 }
-
-
-/* ===== Language Selector & Indicator ===== */
-.language-selector {
-  background-color: #2b2b2b;
-  color: #fff;
-  border: 1px solid #505050;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: 14px;
-  outline: none;
-}
-.language-selector:focus { border-color: #007acc; }
-.language-indicator { color: #a7a7a7; font-size: 12px; text-transform: uppercase; }
 
 /* ===== Run Button ===== */
 .run-button {
@@ -314,7 +293,7 @@ html, body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,.55);
-  display: none;           /* hidden by default; shown when rendered or via .open */
+  display: none;
   z-index: 1200;
 }
 .drawer-backdrop.open { display: block; }
@@ -357,7 +336,6 @@ html, body {
 }
 .drawer .btn.secondary { background: #ef4444; } /* leave/logout */
 
-/* ---------- Signed-in pill (desktop + drawer) ---------- */
 .signed-in-pill {
   background: #0b1220;
   color: #b9d6ff;
@@ -366,7 +344,7 @@ html, body {
   border: 1px solid #2a3b52;
   font-size: 12px;
   white-space: nowrap;
-  margin-left: 12px; /* sits nicely after the title */
+  margin-left: 12px;
 }
 .signed-in-pill.small {
   background: #0b1220;
@@ -375,7 +353,7 @@ html, body {
   font-size: 12px;
 }
 
-/* --- Drawer buttons: same size & centered text --- */
+/* Drawer buttons */
 .drawer .create-room-btn,
 .drawer .join-room-btn,
 .drawer .download-btn,
@@ -383,17 +361,18 @@ html, body {
 .drawer .logout-btn,
 .drawer .btn {
   width: 100%;
-  min-height: 44px;          /* uniform height */
-  padding: 12px 16px;        /* consistent padding */
+  min-height: 44px;
+  padding: 12px 16px;
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;   /* center the label horizontally */
-  text-align: center;        /* just in case */
-  gap: 8px; 
-  font-size: 16px;   
-  font-weight: bold;              /* icon + label spacing if any */
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: bold;
 }
+
 /* ===================== Responsive ===================== */
 
 /* Laptops */
@@ -410,7 +389,6 @@ html, body {
 
 /* Tablets portrait & big phones */
 @media (max-width: 900px){
-  /* convert to vertical stack */
   .code-editor-layout {
     display: flex;
     flex-direction: column;
@@ -420,7 +398,6 @@ html, body {
   .editor-section { min-height: 48vh; }
   .output-section { min-height: 48vh; }
 
-  /* topbar: center title, show hamburger & balance with right spacer */
   .hamburger, .hamburger-btn { display: inline-flex; }
   .topbar {
     padding: 14px 16px;
@@ -430,44 +407,34 @@ html, body {
   }
   .topbar-left {
     flex: 1 1 auto;
-    justify-content: center;         /* center the title within the left zone */
+    justify-content: center;
     position: relative;
   }
   .app-title { font-size: 20px; text-align: center; }
-  .room-pill { display: none; }      /* moved to drawer if needed */
-  .topbar-actions { display: none; } /* actions are in the drawer on mobile */
+  .room-pill { display: none; }
+  .topbar-actions { display: none; }
 
-  /* place hamburger at the far left of the bar without shifting title */
   .hamburger {
     position: absolute;
     left: 0;
   }
 }
 
-
 /* Phones */
 @media (max-width: 600px){
   .editor-header{
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
     gap: 8px;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* keep tight */
   }
-  /* language selector stretches on the left */
   .editor-header .language-selector,
   .editor-header select{
-    flex: 1 1 auto;
+    flex: 1 1 auto;     /* allow it to grow a bit on tiny screens */
+    min-width: 0;
     max-width: none;
   }
-  /* buttons on the right, icon-only */
   .editor-actions{
-    display: flex !important;
-    width: auto !important;
-    gap: 8px;
     flex: 0 0 auto;
   }
-  /* icon-only buttons for run */
   .icon-btn .label { display: none; }
   .icon-btn { padding: 8px; aspect-ratio: 1; min-width: 40px; justify-content: center; }
   .icon-btn svg { width: 18px; height: 18px; }
@@ -475,40 +442,14 @@ html, body {
 
 /* Small phones */
 @media (max-width: 420px){
-  .app-title { font-size: 16px;}
+  .app-title { font-size: 16px; }
   .editor-header, .output-header { min-height: 38px; padding: 6px 10px; }
   .icon-btn { min-width: 36px; padding: 7px; }
   .icon-btn svg { width: 16px; height: 16px; }
 }
-
 
 /* Landscape phones with short height */
 @media (max-height: 560px) and (orientation: landscape){
   .editor-section { min-height: 60vh; }
   .output-section { min-height: 30vh; }
 }
-/* Narrow tablets (601–700px): keep language selector and run button on one line */
-@media (min-width: 601px){
-  .editor-header{
-    flex-wrap: nowrap;      /* prevent wrapping */
-    gap: 8px;
-  }
-  .editor-header .language-selector,
-  .editor-header select{
-    flex: 1 1 auto;         /* selector grows */
-    max-width: none;
-    min-width: 0;           /* allow shrinking without wrap */
-  }
-  .run-button{
-    flex: 0 0 auto;         /* keep button size stable */
-  }
-  /* make run button icon-only in this band to save space */
-  .run-button.icon-btn .label{ display: none; }
-  .run-button.icon-btn{
-    padding: 8px;
-    aspect-ratio: 1;
-    min-width: 40px;
-    justify-content: center;
-  }
-}
-
